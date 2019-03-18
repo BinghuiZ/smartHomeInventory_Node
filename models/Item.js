@@ -2,9 +2,10 @@ const Sequelize = require('sequelize')
 const db = require('../databbase/db')
 
 module.exports = db.define(
-    'user',
+    'items',
     {
-        id:
+        
+        home_id:
         {
             type: 'INT(10)',
             allowNull: false,
@@ -12,52 +13,38 @@ module.exports = db.define(
             primaryKey: true,
             autoIncrement: true
         },
-        first_name:
+        address:
         {
             type: 'VARCHAR(255)',
             allowNull: false,
             defaultValue: null,
             primaryKey: false
         },
-        last_name:
+        district:
         {
             type: 'VARCHAR(255)',
             allowNull: false,
             defaultValue: null,
             primaryKey: false
         },
-        email:
+        latitude:
         {
-            type: 'VARCHAR(255)',
+            type: 'DECIMAL(19,0)',
             allowNull: false,
             defaultValue: null,
             primaryKey: false
         },
-        password:
+        longitude:
         {
-            type: 'VARCHAR(255)',
+            type: 'DECIMAL(19,0)',
             allowNull: false,
-            defaultValue: null,
-            primaryKey: false
-        },
-        permission_id:
-
-        {
-            type: 'INT(10)',
-            allowNull: true,
-            defaultValue: null,
-            primaryKey: false
-        },
-        home_id:
-        {
-            type: 'INT(10)',
-            allowNull: true,
             defaultValue: null,
             primaryKey: false
         }
+        
     },
     {
-        tableName: 'user',
+        tableName: 'items',
         freezeTableName: true,
         timestamps: false
     }

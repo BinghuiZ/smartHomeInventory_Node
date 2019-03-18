@@ -15,38 +15,6 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-// router.post('/register', (req, res) => {
-//   const userData = {
-//     name: req.body.name,
-//     email: req.body.email,
-//     password: req.body.password
-//   }
-//   User.findOne({
-//     where: {
-//       email: req.body.email
-//     }
-//   })
-//   .then(user => {
-//     if(!user) {
-//       bcrypt.hash(req.body.password, 10, (err, hash) => {
-//         userData.password = hash
-//         User.create(userData)
-//         .then(user => {
-//           res.json({success: true, message: user.email + ' registered'})
-//         })
-//         .catch(err => {
-//           res.send('error: ' + err)
-//         })
-//       })
-//     } else {
-//       res.json({success: false, message: 'User already exists!'})
-//     }
-//   })
-//   .catch(err => {
-//     res.send('error: ' + err)
-//   })
-// })
-
 router.post('/register', async (req, res) => {
   let { name, email, password, permission_id, home_id } = req.body;
   try {
@@ -78,7 +46,7 @@ router.post('/login', async (req, res) => {
     var userResult = await User.findOne({ where: { email } });
     if (userResult) {
       if (bcrypt.compareSync(password, userResult.password)) {
-        let token = jwt.sign(userResult.toJSON(), process.env.SECRET_KEY, {
+        let token = jwt.sign(userResult.dataValues, process.env.SECRET_KEY, {
           expiresIn: 1440
         })
         res.send(token)
@@ -88,6 +56,76 @@ router.post('/login', async (req, res) => {
     }
   } catch (e) {
     console.log(e)
+    res.status(400).json({ success: false, message: 'system error' })
+  }
+})
+
+router.use( async(req, res, next) => {
+  let token = req.body.token
+  try {
+    if (token) {
+      await jwt.verify(token, process.env.SECRET_KEY, async(err, decoded) => {
+        if (err) {
+          res.status(400).json({success: false, message: 'Token not valid.'})
+        } else {
+          req.decoded = decoded
+          next()
+        }
+      })
+    } else {
+      res.status(403).send({
+        success: false,
+        message: 'No token provided'
+      })
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ success: false, message: 'system error' })
+  }
+})
+
+router.put('/edit', async(req, res) => {
+  let { name } = req.body
+  let decoded = req.decoded
+  try {
+    let userResult = await User.findOne({ where: {email: decoded.email}})
+    if (userResult) {
+      let result = await userResult.update({name})
+      if (result > 0) {
+        console.log(result)
+        res.send(result)
+      } else {
+        console.log(result)
+        res.send(result)
+      }
+    } else {
+      console.log('user not found')
+    }
+      
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ success: false, message: 'system error' })
+  }
+})
+
+router.delete('/deleteUser', async(req, res) => {
+  let decoded = req.decoded
+  try {
+    let userResult = await User.findOne({ where: {email: decoded.email}})
+    if (userResult) {
+      let result = await User.destroy({ where: {email: userResult.email}})
+      if (result) {
+        console.log(result)
+        res.json(result)
+      } else {
+        console.log(result)
+        res.json(result)
+      }
+    } else {
+      console.log('user not found')
+    }
+  } catch (err) {
+    console.log(err)
     res.status(400).json({ success: false, message: 'system error' })
   }
 })
