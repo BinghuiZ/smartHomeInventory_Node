@@ -7,11 +7,10 @@ module.exports = db.define(
         
         home_id:
         {
-            type: 'INT(10)',
+            type: 'VARCHAR(255)',
             allowNull: false,
             defaultValue: null,
-            primaryKey: true,
-            autoIncrement: true
+            primaryKey: true
         },
         address:
         {
@@ -20,24 +19,17 @@ module.exports = db.define(
             defaultValue: null,
             primaryKey: false
         },
-        district:
-        {
-            type: 'VARCHAR(255)',
-            allowNull: false,
-            defaultValue: null,
-            primaryKey: false
-        },
         latitude:
         {
-            type: 'DECIMAL(19,0)',
-            allowNull: false,
+            type: 'DECIMAL(19,15)',
+            allowNull: true,
             defaultValue: null,
             primaryKey: false
         },
         longitude:
         {
-            type: 'DECIMAL(19,0)',
-            allowNull: false,
+            type: 'DECIMAL(19,15)',
+            allowNull: true,
             defaultValue: null,
             primaryKey: false
         }
