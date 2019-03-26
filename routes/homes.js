@@ -83,6 +83,8 @@ router.use(async (req, res, next) => {
     }
 })
 
+
+
 router.post('/createHome', async (req, res) => {
     let { address, latitude, longitude } = req.body;
     let decoded = req.decoded
@@ -123,6 +125,37 @@ router.post('/createHome', async (req, res) => {
     } catch (e) {
         console.log(e)
         res.status(400).json({ success: false, message: 'system error' });
+    }
+})
+
+
+
+router.delete('/removeHome', async (req, res) => {
+    let decoded = req.decoded
+    try {
+        let userResult = await User.findOne({ where: { email: decoded.email } })
+        if (userResult) {
+            let home = await Home.destroy({ where: { home_id: userResult.home_id } })
+            if (home) {
+                console.log(home)
+                
+                let [userUpdateResult, affectedRows] = await User.update({ home_id: null }, { where: { home_id: userResult.home_id } })
+                if (userUpdateResult) {
+                    res.status(200).json({ success: true, message: 'Home removed', data: userUpdateResult })
+                } else {
+                    res.status(400).json({ success: false, message: 'Something occured, Please try again' })
+                }
+
+            } else {
+                console.log(home)
+                res.status(400).json({ success: false, message: 'Home remove fail', data: result })
+            }
+        } else {
+            console.log('user not found')
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({ success: false, message: 'system error' })
     }
 })
 

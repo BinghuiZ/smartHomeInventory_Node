@@ -9,14 +9,6 @@ module.exports = db.define(
             type: 'INT(10)',
             allowNull: false,
             defaultValue: null,
-            primaryKey: false,
-            autoIncrement: true
-        },
-        item_id:
-        {
-            type: 'INT(10)',
-            allowNull: false,
-            defaultValue: null,
             primaryKey: false
         },
         purchase_quantity:
@@ -29,6 +21,13 @@ module.exports = db.define(
         resupplyNo:
         {
             type: 'INT(10)',
+            allowNull: false,
+            defaultValue: null,
+            primaryKey: false
+        },
+        barcode:
+        {
+            type: 'VARCHAR(255)',
             allowNull: false,
             defaultValue: null,
             primaryKey: false

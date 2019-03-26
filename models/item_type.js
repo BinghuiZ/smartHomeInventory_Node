@@ -2,9 +2,10 @@ const Sequelize = require('sequelize')
 const db = require('../databbase/db')
 
 module.exports = db.define(
-    'shopping_list',
+    'item_type',
     {
-        list_id:
+
+        type_id:
         {
             type: 'INT(10)',
             allowNull: false,
@@ -12,16 +13,17 @@ module.exports = db.define(
             primaryKey: true,
             autoIncrement: true
         },
-        home_id:
+        name:
         {
             type: 'VARCHAR(255)',
             allowNull: false,
             defaultValue: null,
-            primaryKey: true
+            primaryKey: false
         }
+
     },
     {
-        tableName: 'shopping_list',
+        tableName: 'ite,_type',
         freezeTableName: true,
         timestamps: false
     }

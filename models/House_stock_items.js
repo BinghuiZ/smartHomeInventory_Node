@@ -2,41 +2,34 @@ const Sequelize = require('sequelize')
 const db = require('../databbase/db')
 
 module.exports = db.define(
-    'home',
+    'house_stock_items',
     {
-        
-        home_id:
+
+        stock_id:
         {
-            type: 'VARCHAR(255)',
+            type: 'INT(10)',
             allowNull: false,
             defaultValue: null,
-            primaryKey: true
+            primaryKey: false
         },
-        address:
+        barcode:
         {
             type: 'VARCHAR(255)',
             allowNull: false,
             defaultValue: null,
             primaryKey: false
         },
-        latitude:
+        quantity:
         {
-            type: 'DOUBLE(19,15)',
-            allowNull: true,
-            defaultValue: null,
-            primaryKey: false
-        },
-        longitude:
-        {
-            type: 'DOUBLE(19,15)',
-            allowNull: true,
+            type: 'INT(10)',
+            allowNull: false,
             defaultValue: null,
             primaryKey: false
         }
-        
+
     },
     {
-        tableName: 'home',
+        tableName: 'house_stock_items',
         freezeTableName: true,
         timestamps: false
     }
