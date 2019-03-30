@@ -38,7 +38,7 @@ router.use(async (req, res, next) => {
 
 
 
-router.put('/assignHome', async (req, res) => {
+router.put('/pairHome', async (req, res) => {
     let { home_id } = req.body
     let decoded = req.decoded
     try {

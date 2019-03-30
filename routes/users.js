@@ -16,6 +16,8 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
+
+
 router.post('/register', async (req, res) => {
   let { first_name, last_name, email, password, permission_id, home_id } = req.body;
   try {
@@ -42,6 +44,8 @@ router.post('/register', async (req, res) => {
   }
 })
 
+
+
 router.post('/login', async (req, res) => {
   let { email, password } = req.body;
   try {
@@ -61,6 +65,8 @@ router.post('/login', async (req, res) => {
     res.status(400).json({ success: false, message: 'system error' })
   }
 })
+
+
 
 router.use(async (req, res, next) => {
   let token = req.body.token
@@ -86,6 +92,55 @@ router.use(async (req, res, next) => {
   }
 })
 
+
+
+router.get('/profile', async (req, res) => {
+  let decoded = req.decoded
+  try {
+    let userResult = await User.findOne({ where: { email: decoded.email } })
+    if (userResult) {
+      
+      console.log(userResult.dataValues)
+      if (userResult.home_id != null) {
+        let homeResult = await Home.findOne({ where: { home_id: userResult.home_id } })
+
+        if (homeResult) {
+          res.status(200).json({ success:true,
+                                message: 'profile with home info',
+                                data: { first_name: userResult.first_name,
+                                        last_name: userResult.last_name,
+                                        email: userResult.email,
+                                        address: homeResult.address,
+                                        latitude: homeResult.latitude,
+                                        longitude: homeResult.longitude  } })
+        } else {
+          res.status(200).json({ success:true,
+                                message: 'home cannot been found',
+                                data: { first_name: userResult.first_name,
+                                        last_name: userResult.last_name,
+                                        email: userResult.email  } })
+        }
+
+      } else {
+        res.status(200).json({ success:true,
+                              message: 'profile',
+                              data: { first_name: userResult.first_name,
+                                      last_name: userResult.last_name,
+                                      email: userResult.email  } })
+      }
+
+    } else {
+      console.log('user not found')
+      res.status(400).json({ success: false, message: 'user not found' })
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ success: false, message: 'system error' })
+  }
+})
+
+
+
 router.put('/edit', async (req, res) => {
   let { first_name, last_name } = req.body
   let decoded = req.decoded
@@ -93,9 +148,9 @@ router.put('/edit', async (req, res) => {
     let userResult = await User.findOne({ where: { email: decoded.email } })
     if (userResult) {
       let result = await userResult.update({ first_name, last_name })
-      if (result > 0) {      
+      if (result = 1) {
         res.status(200).json({ success: true, message: 'success' })
-      } else {      
+      } else {
         res.status(400).json({ success: false, message: 'failed' })
       }
     } else {
@@ -106,6 +161,8 @@ router.put('/edit', async (req, res) => {
     res.status(400).json({ success: false, message: 'system error' })
   }
 })
+
+
 
 router.delete('/deleteUser', async (req, res) => {
   let decoded = req.decoded
@@ -129,13 +186,15 @@ router.delete('/deleteUser', async (req, res) => {
   }
 })
 
+
+
 /* permission 0: check stock, 1: udpate inventory record, 2: can edit shopping list & place order 3: admin permission  */
 router.use(async (req, res, next) => {
   let decoded = req.decoded
   try {
     if (decoded) {
       if (decoded.permission_id > 1) {
-         next()
+        next()
       } else {
         res.status(400).json({ success: false, message: 'Permission Denied' })
       }
@@ -150,6 +209,8 @@ router.use(async (req, res, next) => {
     res.status(400).json({ success: false, message: 'system error' })
   }
 })
+
+
 
 router.put('/editMemberPermission', async (req, res) => {
   let { id, permission_id } = req.body
@@ -174,5 +235,74 @@ router.put('/editMemberPermission', async (req, res) => {
     res.status(400).json({ success: false, message: 'system error' })
   }
 })
+
+
+
+/* permission 0: check stock, 1: udpate inventory record, 2: can edit shopping list & place order 3: admin permission  */
+router.use(async (req, res, next) => {
+  let decoded = req.decoded
+  try {
+    if (decoded) {
+      if (decoded.permission_id > 2) {
+        next()
+      } else {
+        res.status(400).json({ success: false, message: 'Permission Denied' })
+      }
+    } else {
+      res.status(403).send({
+        success: false,
+        message: 'No token provided'
+      })
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ success: false, message: 'system error' })
+  }
+})
+
+
+
+/* permission 0: check stock, 1: udpate inventory record, 2: can edit shopping list & place order 3: admin permission  */
+router.use(async (req, res, next) => {
+  let decoded = req.decoded
+  try {
+    if (decoded) {
+      if (decoded.permission_id = 3) {
+        next()
+      } else {
+        res.status(400).json({ success: false, message: 'Permission Denied' })
+      }
+    } else {
+      res.status(403).send({
+        success: false,
+        message: 'No token provided'
+      })
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ success: false, message: 'system error' })
+  }
+})
+
+
+
+router.get('/getAllUsers', async (req, res) => {
+  let decoded = req.decoded
+  try {
+    let userResult = await User.findAll()
+    if (userResult) {
+      
+      res.status(200).json({ success: true, message: '', data: userResult })
+
+    } else {
+      console.log('user not found')
+      res.status(400).json({ success: false, message: 'user not found' })
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(400).json({ success: false, message: 'system error' })
+  }
+})
+
 
 module.exports = router;
