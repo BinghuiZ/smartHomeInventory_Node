@@ -23,7 +23,7 @@ module.exports = db.define(
 
     },
     {
-        tableName: 'ite,_type',
+        tableName: 'item_type',
         freezeTableName: true,
         timestamps: false
     }

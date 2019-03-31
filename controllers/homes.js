@@ -3,8 +3,6 @@ var nanoid = require('nanoid')
 const User = require('../models/User')
 const Home = require('../models/Home')
 
-process.env.SECRET_KEY = 'secret.BenFYP'
-
 exports.pairHome = async (req, res) => {
     let { home_id } = req.body
     let decoded = req.decoded
@@ -19,6 +17,7 @@ exports.pairHome = async (req, res) => {
             }
         } else {
             console.log('user not found')
+            res.status(400).json({ success: false, message: 'user not found' })
         }
     } catch (e) {
         console.log(e)
