@@ -1,10 +1,8 @@
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const User = require('../models/User')
 const Home = require('../models/Home')
-
-process.env.SECRET_KEY = 'secret.BenFYP'
+const JWT = require('../util/jwt')
 
 exports.test = function (req, res, next) {
     res.send('respond with a resource');
@@ -25,6 +23,7 @@ exports.register = async (req, res) => {
                     permission_id,
                     home_id
                 });
+                console.log(createResult)
                 res.status(200).json({ success: true, message: createResult.email + ' registered' })
             })
         } else {
@@ -40,11 +39,10 @@ exports.login = async (req, res) => {
     let { email, password } = req.body;
     try {
         var userResult = await User.findOne({ where: { email } });
+        console.log(userResult)
         if (userResult) {
             if (bcrypt.compareSync(password, userResult.password)) {
-                let token = jwt.sign(userResult.dataValues, process.env.SECRET_KEY, {
-                    expiresIn: 1440
-                })
+                let token = await JWT.genToken(userResult.dataValues)
                 res.status(200).json({ success: true, message: 'success', data: token })
             }
         } else {
@@ -60,9 +58,8 @@ exports.profile = async (req, res) => {
     let decoded = req.decoded
     try {
         let userResult = await User.findOne({ where: { email: decoded.email } })
+        console.log(userResult)
         if (userResult) {
-
-            console.log(userResult.dataValues)
             if (userResult.home_id != null) {
                 let homeResult = await Home.findOne({ where: { home_id: userResult.home_id } })
 
@@ -120,6 +117,7 @@ exports.edit = async (req, res) => {
         let userResult = await User.findOne({ where: { email: decoded.email } })
         if (userResult) {
             let result = await userResult.update({ first_name, last_name })
+            console.log(result)
             if (result = 1) {
                 res.status(200).json({ success: true, message: 'success' })
             } else {
@@ -161,10 +159,10 @@ exports.editMemberPermission = async (req, res) => {
     let decoded = req.decoded
     try {
         let member = await User.findOne({ where: { id } })
+        console.log(member)
         if (member) {
             let result = await member.update({ permission_id })
-            // console.log(`result    :   ` )
-            // console.log(result)
+            console.log(result)
             if (result = 1) {
                 res.status(200).json({ success: true, message: 'update success', data: result })
             } else {
@@ -184,6 +182,7 @@ exports.getAllUsers = async (req, res) => {
     let decoded = req.decoded
     try {
         let userResult = await User.findAll()
+        console.log(userResult)
         if (userResult) {
 
             res.status(200).json({ success: true, message: '', data: userResult })
@@ -191,6 +190,26 @@ exports.getAllUsers = async (req, res) => {
         } else {
             console.log('user not found')
             res.status(400).json({ success: false, message: 'user not found' })
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(400).json({ success: false, message: 'system error' })
+    }
+}
+
+exports.getMemberProfiles = async (req, res) => {
+    let decoded = req.decoded
+    try {
+        if (decoded.home_id != null) {
+            let memberResult = await User.findAll({ where: {home_id: decoded.home_id} })
+            console.log(memberResult)            
+            if (memberResult) {
+                res.status(200).json({ success: true, message: 'family members profiles', data: memberResult })
+            } else {
+                res.status(400).json({ success: false, message: 'You do not have family members.' })
+            }
+        } else {
+            res.status(400).json({ success: false, message: 'You do not have a home record, please create a home first.' })
         }
     } catch (e) {
         console.log(e)

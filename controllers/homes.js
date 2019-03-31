@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 var nanoid = require('nanoid')
 
 const User = require('../models/User')

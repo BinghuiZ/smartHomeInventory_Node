@@ -45,7 +45,7 @@ module.exports = db.define(
         {
             type: 'INT(10)',
             allowNull: true,
-            defaultValue: null,
+            defaultValue: 0,
             primaryKey: false
         },
         home_id:
