@@ -17,7 +17,7 @@ exports.createShoppingList = async (req, res) => {
                 res.status(400).json({ success: false, message: 'Shopping list already exist, every home has only one shopping list.' })
             }
         } else {
-            res.status(400).json({ success: false, message: 'No Home record, Please create home first.' })
+            res.status(400).json({ success: false, message: 'No Home record, Please create or pair home first.' })
         }
     } catch (e) {
         console.log(e)
@@ -46,7 +46,7 @@ exports.removeShoppingList = async (req, res) => {
                 res.status(400).json({ success: false, message: 'shopping list not found' })
             }
         } else {
-            res.status(400).json({ success: false, message: 'No Home record, Please create home first.' })
+            res.status(400).json({ success: false, message: 'No Home record, Please create or pair home first.' })
         }
     } catch (err) {
         console.log(err)
@@ -101,7 +101,7 @@ exports.addItemToShoppingList = async (req, res) => {
                 res.status(400).json({ success: false, message: 'shopping list not found' })
             }
         } else {
-            res.status(400).json({ success: false, message: 'No Home record, Please create home first.' })
+            res.status(400).json({ success: false, message: 'No Home record, Please create or pair home first.' })
         }
     } catch (err) {
         console.log(err)
@@ -149,7 +149,7 @@ exports.updateItemQuantityAndResupply = async (req, res) => {
                 res.status(400).json({ success: false, message: 'shopping list not found' })
             }
         } else {
-            res.status(400).json({ success: false, message: 'No Home record, Please create home first.' })
+            res.status(400).json({ success: false, message: 'No Home record, Please create or pair home first.' })
         }
     } catch (err) {
         console.log(err)
@@ -197,7 +197,61 @@ exports.remvoeItemFromList = async (req, res) => {
                 res.status(400).json({ success: false, message: 'shopping list not found' })
             }
         } else {
-            res.status(400).json({ success: false, message: 'No Home record, Please create home first.' })
+            res.status(400).json({ success: false, message: 'No Home record, Please create or pair home first.' })
+        }
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({ success: false, message: 'system error' })
+    }
+}
+
+exports.getAllShoppingListItems = async (req, res) => {
+    let decoded = req.decoded
+    let home_id = decoded.home_id
+    try {
+        if (home_id != null) {
+            let shoplistResult = await ShoppingList.findOne({ where: { home_id } })
+            console.log(`shoplistResult :   ${shoplistResult}`)
+            if (shoplistResult) {
+
+                let list_id = shoplistResult.list_id
+                console.log(`list_id    :   ${list_id}`)
+                let SLIResult = await ShoppingListItems.findAll({ where: { list_id } })
+                console.log(`SLIResult  :   ${SLIResult}`)
+                console.log(SLIResult.length)
+                
+                if (SLIResult.length > 0) {
+
+                    let data = []
+                    for (var i in SLIResult) {
+                        let temp = SLIResult[i]
+                        let itemResult = await Items.findOne({ where: { barcode: temp.barcode } })
+                        
+                        if (itemResult) {
+                            data.push({
+                                id: temp.id,
+                                list_id: temp.list_id,
+                                purchase_quantity: temp.purchase_quantity,
+                                resupplyNo: temp.resupplyNo,
+                                barcode: temp.barcode,
+                                name: itemResult.name,
+                                image: itemResult.image,
+                            })
+                        } 
+
+                    }
+                    
+                    res.status(200).json({ success: false, message: 'shopping list', data: data })
+
+                } else {
+                    res.status(400).json({ success: false, message: 'Your shopping list is empty, please add item to your list', data: SLIResult })
+                }
+
+            } else {
+                res.status(400).json({ success: false, message: 'shopping list not found' })
+            }
+        } else {
+            res.status(400).json({ success: false, message: 'No Home record, Please create or pair home first.' })
         }
     } catch (err) {
         console.log(err)

@@ -22,6 +22,8 @@ router.delete('/removeShoppingList', shoppingList_controller.removeShoppingList)
 router.post('/addItemToShoppingList', shoppingList_controller.addItemToShoppingList)
 router.put('/updateItemQuantityAndResupply', shoppingList_controller.updateItemQuantityAndResupply)
 router.delete('/remvoeItemFromList', shoppingList_controller.remvoeItemFromList)
+router.get('/getAllShoppingListItems', shoppingList_controller.getAllShoppingListItems)
+
 
 /* admin only  */
 router.use(authCheck.permissionLevelEQ3)
