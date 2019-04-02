@@ -117,14 +117,15 @@ exports.edit = async (req, res) => {
         let userResult = await User.findOne({ where: { email: decoded.email } })
         if (userResult) {
             let result = await userResult.update({ first_name, last_name })
-            console.log(result)
-            if (result = 1) {
+            console.log(`result :   ${result}`)
+            if (result) {
                 res.status(200).json({ success: true, message: 'success' })
             } else {
                 res.status(400).json({ success: false, message: 'failed' })
             }
         } else {
             console.log('user not found')
+            res.status(400).json({ success: false, message: 'user not found' })
         }
     } catch (e) {
         console.log(e)
@@ -163,7 +164,7 @@ exports.editMemberPermission = async (req, res) => {
         if (member) {
             let result = await member.update({ permission_id })
             console.log(result)
-            if (result = 1) {
+            if (result) {
                 res.status(200).json({ success: true, message: 'update success', data: result })
             } else {
                 res.status(400).json({ success: false, message: 'something error' })

@@ -4,6 +4,14 @@ const db = require('../databbase/db')
 module.exports = db.define(
     'shopping_list_items',
     {
+        id:
+        {
+            type: 'INT(10)',
+            allowNull: false,
+            defaultValue: null,
+            primaryKey: true,
+            autoIncrement: true
+        },
         list_id:
         {
             type: 'INT(10)',
@@ -22,7 +30,7 @@ module.exports = db.define(
         {
             type: 'INT(10)',
             allowNull: false,
-            defaultValue: null,
+            defaultValue: 0,
             primaryKey: false
         },
         barcode:
