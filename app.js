@@ -12,6 +12,7 @@ var usersRouter = require('./routes/usersRoutes')
 var homesRouter = require('./routes/homesRoutes')
 var itemsRouter = require('./routes/itemsRoutes')
 var shoppinglistsRouter = require('./routes/shoppingListRoutes')
+var houseStockRouter = require('./routes/houseStockRoutes')
 
 var app = express()
 
@@ -35,6 +36,7 @@ app.use('/users', usersRouter)
 app.use('/homes', homesRouter)
 app.use('/items', itemsRouter)
 app.use('/shoplists', shoppinglistsRouter)
+app.use('/houseStock', houseStockRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

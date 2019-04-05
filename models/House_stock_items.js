@@ -5,6 +5,14 @@ module.exports = db.define(
     'house_stock_items',
     {
 
+        id:
+        {
+            type: 'INT(10)',
+            allowNull: false,
+            defaultValue: null,
+            primaryKey: true,
+            autoIncrement: true
+        },
         stock_id:
         {
             type: 'INT(10)',
