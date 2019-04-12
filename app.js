@@ -51,7 +51,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500)
-  res.json({message: 'error123'})
+  res.json({message: 'error'})
 })
 
 app.listen(3000)

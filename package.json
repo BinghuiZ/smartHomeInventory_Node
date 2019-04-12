@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "doc": "node_modules/.bin/jsdoc controllers/"
   },
   "dependencies": {
     "bcrypt": "^3.0.4",
@@ -21,5 +22,8 @@
     "nanoid": "^2.0.1",
     "nodemon": "^1.18.10",
     "sequelize": "^4.42.0"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.5.5"
   }
 }
