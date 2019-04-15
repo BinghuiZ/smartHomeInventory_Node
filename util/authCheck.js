@@ -1,7 +1,8 @@
 var JWT = require('./jwt')
 
 exports.authCheck = async (req, res, next) => {
-    let token = req.body.token
+    console.log(req.headers)
+    let token = req.body.token || req.headers.authorization
     try {
         if (typeof token !== 'undefined') {
             let decoded = await JWT.verifyToken(token)
