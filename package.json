@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "nodemon app.js",
-    "doc": "node_modules/.bin/jsdoc controllers/"
+    "doc": "node_modules/.bin/jsdoc controllers/",
+    "test": "node_modules/.bin/jasmine-node spec --color --verbose --autotest --watch ."
   },
   "dependencies": {
     "bcrypt": "^3.0.4",
@@ -24,6 +25,8 @@
     "sequelize": "^4.42.0"
   },
   "devDependencies": {
+    "jasmine": "^3.4.0",
+    "jasmine-console-reporter": "^3.1.0",
     "jsdoc": "^3.5.5"
   }
 }
