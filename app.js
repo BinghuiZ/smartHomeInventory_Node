@@ -54,6 +54,6 @@ app.use(function(err, req, res, next) {
   res.json({message: 'error'})
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
 
 module.exports = app
