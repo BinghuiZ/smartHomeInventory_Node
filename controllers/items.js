@@ -1,4 +1,4 @@
-const Item_Type = require('../models/Item_type')
+const Item_Type = require('../models/item_type')
 const Item = require('../models/Item')
 
 
