@@ -1,9 +1,9 @@
 {
   "name": "backend",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "doc": "jsdoc controllers/",
     "test": "jest"
   },
