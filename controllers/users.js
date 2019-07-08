@@ -97,6 +97,7 @@ exports.profile = async (req, res) => {
                             first_name: userResult.first_name,
                             last_name: userResult.last_name,
                             email: userResult.email,
+                            permission: userResult.permission_id,
                             address: homeResult.address,
                             latitude: homeResult.latitude,
                             longitude: homeResult.longitude
@@ -109,7 +110,8 @@ exports.profile = async (req, res) => {
                         data: {
                             first_name: userResult.first_name,
                             last_name: userResult.last_name,
-                            email: userResult.email
+                            email: userResult.email,
+                            permission: userResult.permission_id
                         }
                     })
                 }
@@ -121,7 +123,8 @@ exports.profile = async (req, res) => {
                     data: {
                         first_name: userResult.first_name,
                         last_name: userResult.last_name,
-                        email: userResult.email
+                        email: userResult.email,
+                        permission: userResult.permission_id
                     }
                 })
             }
@@ -267,8 +270,8 @@ exports.getMemberProfiles = async (req, res) => {
     let decoded = req.decoded
     try {
         if (decoded.home_id != null) {
-            let memberResult = await User.findAll({ where: {home_id: decoded.home_id} })
-            console.log(memberResult)            
+            let memberResult = await User.findAll({ where: { home_id: decoded.home_id } })
+            console.log(memberResult)
             if (memberResult) {
                 res.status(200).json({ success: true, message: 'family members profiles', data: memberResult })
             } else {
