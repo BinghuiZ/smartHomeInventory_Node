@@ -41,7 +41,6 @@ module.exports = db.define(
             primaryKey: false
         },
         permission_id:
-
         {
             type: 'INT(10)',
             allowNull: true,

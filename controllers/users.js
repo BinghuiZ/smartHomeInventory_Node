@@ -98,6 +98,7 @@ exports.profile = async (req, res) => {
                             last_name: userResult.last_name,
                             email: userResult.email,
                             permission: userResult.permission_id,
+                            home_id: userResult.home_id,
                             address: homeResult.address,
                             latitude: homeResult.latitude,
                             longitude: homeResult.longitude
