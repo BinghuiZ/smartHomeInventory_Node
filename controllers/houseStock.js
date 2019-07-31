@@ -98,6 +98,7 @@ exports.addItemToHouseStock = async (req, res) => {
 
                 if (!ItemResult) {
                     res.status(400).json({ success: false, message: 'this item is not exist', data: { barcode: barcode } })
+                    return
                 }
 
                 if (!HSIResult) {
