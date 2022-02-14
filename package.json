@@ -8,7 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
@@ -22,12 +22,12 @@
     "mysql2": "^1.6.5",
     "nanoid": "^2.0.1",
     "nodemon": "^1.18.10",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.44.3"
   },
   "devDependencies": {
     "frisby": "^2.1.1",
     "jest-cli": "^24.7.1",
-    "jsdoc": "^3.5.5"
+    "jsdoc": "^3.6.3"
   },
   "description": "web API backend",
   "main": "app.js",
