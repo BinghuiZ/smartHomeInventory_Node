@@ -65,7 +65,7 @@ exports.createHome = async (req, res) => {
 
                     let userUpdateHome = await userResult.update({ home_id: homeCreateResult.home_id })
                     if (userUpdateHome = 1) {
-                        res.status(200).json({ success: true, message: `Home has been created, The invitation code is ${homeCreateResult.home_id}` })
+                        res.status(200).json({ success: true, message: `Home has been created, The invitation code is ${homeCreateResult.home_id}`, data: homeCreateResult })
                     } else {
                         res.status(400).json({ success: false, message: 'Something occured, Please try again' })
                     }

@@ -10,7 +10,7 @@ exports.authCheck = async (req, res, next) => {
                 req.decoded = decoded
                 next()
             } else {
-                res.status(400).json({ success: false, message: 'Token not valid.' })
+                res.status(400).json({ success: false, message: 'Token not valid.', expired: true })
             }
         } else {
             res.status(403).send({

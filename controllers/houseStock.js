@@ -98,6 +98,7 @@ exports.addItemToHouseStock = async (req, res) => {
 
                 if (!ItemResult) {
                     res.status(400).json({ success: false, message: 'this item is not exist', data: { barcode: barcode } })
+                    return
                 }
 
                 if (!HSIResult) {
@@ -107,8 +108,8 @@ exports.addItemToHouseStock = async (req, res) => {
                     res.status(200).json({ success: true, message: 'create new house stock item', data: createResult })
 
                 } else { 
-
-                    let newQuantity = quantity + HSIResult.quantity
+                    console.log(`quantity   :   ${quantity},        HSIResult.quantity  :   ${HSIResult.quantity}`)
+                    let newQuantity = new Number(quantity) + new Number(HSIResult.quantity)
                     let result = await HSIResult.update({ quantity: newQuantity })
                     console.log(result)
                     if (result) {

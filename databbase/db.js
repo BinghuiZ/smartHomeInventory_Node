@@ -17,6 +17,23 @@ const sequelize = new Sequelize("fyp", "root", "root", {
     storage: 'path/to/database.sqlite'
 })
 
+// const sequelize = new Sequelize("heroku_af94489beda5846", "b0cf461c9b8d87", "46f23291", {
+//     host: 'us-cdbr-iron-east-02.cleardb.net',
+//     dialect: 'mysql',
+//     port: '3306',
+//     operatorsAliases: false,
+//     timezone: '+08:00',
+
+//     pool: {
+//         max: 5,
+//         min: 0,
+//         acquire: 30000,
+//         idle: 10000
+//     },
+    
+//     storage: 'path/to/database.sqlite'
+// })
+
 sequelize
     .authenticate()
     .then(() => {

@@ -41,11 +41,10 @@ module.exports = db.define(
             primaryKey: false
         },
         permission_id:
-
         {
             type: 'INT(10)',
             allowNull: true,
-            defaultValue: 0,
+            defaultValue: 2,
             primaryKey: false
         },
         home_id:

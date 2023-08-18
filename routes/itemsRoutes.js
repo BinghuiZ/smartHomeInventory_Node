@@ -7,9 +7,12 @@ const authCheck = require('../util/authCheck')
 
 router.use(cors())
 
+router.get('/getAllItems', item_controller.getAllItems)
+router.get('/getItemType', item_controller.getItemType)
+
 /* check logon & token valid */
 router.use(authCheck.authCheck)
-router.get('/getAllItems', item_controller.getAllItems)
+
 
 /* permission 0: check stock, 1: udpate inventory record, 2: can edit shopping list & place order 3: admin permission  */
 router.use(authCheck.permissionLevelGE1)
@@ -25,7 +28,7 @@ router.use(authCheck.permissionLevelEQ3)
 router.post('/createItemType', item_controller.createItemType)
 router.put('/editItemType', item_controller.editItemType)
 router.delete('/removeItemType', item_controller.removeItemType)
-router.get('/getItemType', item_controller.getItemType)
+
 router.put('/editItem', item_controller.editItem)
 router.delete('/removeItem', item_controller.removeItem)
 
